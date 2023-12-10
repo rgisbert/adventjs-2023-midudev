@@ -1,43 +1,16 @@
-// Segundo intento
 function cyberReindeer(road, time) {
-    let roadB = road.replace('S', '.')
-    let prevRoad = road
+    const timerOpen = 5;
+    const way = road.replace('S', '.');
+    let santa = road.indexOf('S') - 1;
 
-    return Array(time)
-        .fill()
-        .map((_, i) => {
-            const nextSanta = prevRoad.indexOf('S') + 1
+    return [
+        ...Array(time)
+            .fill(way, 0, timerOpen)
+            .fill(way.replaceAll('|', '*'), timerOpen)
+            .map(r => {
+                if (r[santa + 1] != '|') santa++;
 
-            if (i === 5) roadB = roadB.replaceAll('|', '*')
-            if (roadB[nextSanta] === '|' || i === 0) return prevRoad
-
-            prevRoad =
-                roadB.substring(0, nextSanta) +
-                'S' +
-                roadB.substring(nextSanta + 1)
-            return prevRoad
-        })
+                return `${r.substring(0, santa)}S${r.substring(santa + 1)}`;
+            }),
+    ];
 }
-
-/* Primer intento
-function cyberReindeer(road, time) {
-    const res = [road]
-    let santaPos = road.indexOf('S')
-
-    for (let i = 1; i < time; i++) {
-        const newWay = [...res.at(-1)]
-
-        if (i >= 5 || road[santaPos + 1] === '.') {
-            newWay[santaPos] = i === 1 ? '.' : road[santaPos]
-            santaPos++
-            newWay[santaPos] = 'S'
-        }
-
-        const step =
-            i < 5 ? newWay.join('') : newWay.join('').replaceAll('|', '*')
-        res.push(step)
-    }
-
-    return res
-}
-*/
